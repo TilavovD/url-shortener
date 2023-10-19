@@ -16,7 +16,8 @@ def shortify(request):
                     'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ]
             random.shuffle(bank)
             random_combination = "".join(bank[:6])
-            return HttpResponse("%s" % random_combination)
+
+            return render(request, 'shortener/result.html', {'result': random_combination})
     else:
         form = LinkForm()
     return render(request, "shortener/home.html", {'form': form})
