@@ -1,5 +1,6 @@
-from django.shortcuts import render
-from django.views.decorators.http import require_http_methods
+from django.shortcuts import render, redirect
+from django.http import HttpResponse
+from django.views.decorators.http import require_http_methods, require_GET
 from django.conf import settings
 from .forms import LinkForm
 from .models import Link
@@ -26,3 +27,12 @@ def shortify(request):
     else:
         form = LinkForm()
     return render(request, "shortener/home.html", {'form': form})
+
+@require_GET
+def link_match(request, link):
+    try:
+        obj = Link.objects.get(title=link)
+        return redirect(obj.link)
+    except Link.DoesNotExist:
+        return HttpResponse("404 Not Found")
+
