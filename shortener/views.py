@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from django.shortcuts import HttpResponse
 from django.views.decorators.http import require_http_methods
+from django.conf import settings
 from .forms import LinkForm
 from .models import Link
 import random
@@ -16,8 +16,13 @@ def shortify(request):
                     'u', 'v', 'w', 'x', 'y', 'z', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', ]
             random.shuffle(bank)
             random_combination = "".join(bank[:6])
+            while Link.objects.filter(title=random_combination):
+                random.shuffle(bank)
+                random_combination = "".join(bank[:6])
 
-            return render(request, 'shortener/result.html', {'result': random_combination})
+            Link.objects.create(title=random_combination, link=form.cleaned_data['link'])
+            link = f'{settings.HOST}/{random_combination}'
+            return render(request, 'shortener/result.html', {'result': link})
     else:
         form = LinkForm()
     return render(request, "shortener/home.html", {'form': form})
