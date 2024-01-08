@@ -19,6 +19,8 @@ COPY . /app
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
+USER root
+
 # Set execute permission for entrypoint.sh
 RUN chmod +x entrypoint.sh
 
