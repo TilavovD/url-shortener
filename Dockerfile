@@ -1,6 +1,10 @@
 # Use an official Python runtime as a parent image
 FROM python:3.9
 
+RUN useradd -ms /bin/bash appuser
+USER appuser
+
+
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
